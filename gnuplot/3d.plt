@@ -14,4 +14,4 @@ OUTFILE=ARG1."3d.png"
 set output OUTFILE
 
 
-splot INFILE using 5:6:7 with points pt 2 ps 1
+splot INFILE using 5:6:7 with points pt 7 ps 1 lc rgb "blue" notitle

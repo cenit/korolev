@@ -14,4 +14,4 @@ OUTFILE=ARG1."2d.png"
 set output OUTFILE
 
 
-plot INFILE using 5:6 with points pt 2 ps 1
+plot INFILE using 5:6 with points pt 7 ps 1 lc rgb "blue" notitle

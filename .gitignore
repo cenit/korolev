@@ -3,6 +3,13 @@
 .vs/
 .vscode/
 
+#png output
+*.png
+
+#log output
+*.slog
+*.log
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

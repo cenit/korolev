@@ -20,63 +20,63 @@
  *
  */
 
-#include<pthread.h>
-#include<stdlib.h>
-#include<tlist.h>
+#include <pthread.h>
+#include <stdlib.h>
+#include <tlist.h>
 
 struct tlist {
-	struct tlist *next;
-	pthread_t thread;
+  struct tlist *next;
+  pthread_t thread;
 };
 
 void tlist_enqueue(struct tlist **tp, pthread_t thread) {
-	struct tlist *new = malloc(sizeof(*new));
-	if (new) {
-		new->thread = thread;
-		if (*tp) {
-			struct tlist *last = *tp;
-			new->next = last->next;
-			last->next = new;
-		} else
-			new->next = new;
-		*tp = new;
-	}
+  struct tlist *new = malloc(sizeof(*new));
+  if (new) {
+    new->thread = thread;
+    if (*tp) {
+      struct tlist *last = *tp;
+      new->next = last->next;
+      last->next = new;
+    } else
+    new->next = new;
+    *tp = new;
+  }
 }
 
 void tlist_push(struct tlist **tp, pthread_t thread) {
-	struct tlist *new = malloc(sizeof(*new));
-	if (new) {
-		new->thread = thread;
-		if (*tp) {
-			struct tlist *last = *tp;
-			new->next = last->next;
-			last->next = new;
-		} else {
-			new->next = new;
-			*tp = new;
-		}
-	}
+  struct tlist *new = malloc(sizeof(*new));
+  if (new) {
+    new->thread = thread;
+    if (*tp) {
+      struct tlist *last = *tp;
+      new->next = last->next;
+      last->next = new;
+    } else {
+      new->next = new;
+      *tp = new;
+    }
+  }
 }
 
 static pthread_t tlist_get(struct tlist **tp) {
-	if (*tp) {
-		struct tlist *last = *tp;
-		struct tlist *first = last->next;
-		pthread_t rval = first->thread;
-		if (first == first->next)
-			*tp = NULL;
-		else
-			last->next = first->next;
-		free(first);
-		return rval;
-	} else
-		return -1;
+  if (*tp) {
+    struct tlist *last = *tp;
+    struct tlist *first = last->next;
+    pthread_t rval = first->thread;
+    if (first == first->next)
+      *tp = NULL;
+    else
+      last->next = first->next;
+    free(first);
+    return rval;
+  } else
+  exit(-1);
 }
 
 pthread_t tlist_dequeue(struct tlist **tp) {
-	return tlist_get(tp);
+  return tlist_get(tp);
 }
 
 pthread_t tlist_pop(struct tlist **tp) {
-	return tlist_get(tp);
+  return tlist_get(tp);
 }

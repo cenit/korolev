@@ -19,9 +19,9 @@
  *
  */
 
-#include<pthread.h>
-#include<signal.h>
-#include<suspend.h>
+#include <pthread.h>
+#include <signal.h>
+#include <suspend.h>
 
 void suspend(void) {
 	int sig;

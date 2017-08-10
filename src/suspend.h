@@ -1,6 +1,6 @@
 #ifndef SUSPEND_H
 #define SUSPEND_H
-#include<pthread.h>
+#include <pthread.h>
 
 void suspend(void);
 

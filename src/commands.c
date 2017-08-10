@@ -8,7 +8,6 @@
 #include "commands.h"
 
 #include "error.h"
-#include "various.h"
 #include "orbitalFunctions.h"
 #include "data.h"
 #include "monitor.h"
@@ -35,9 +34,9 @@ int ExecuteCommand(char* line){
 		return ChangeMode();
 	}
 
-  if(strcmp(commandToken, CALCULATE_ORBITAL_VELOCITY) == 0){
+	if(strcmp(commandToken, CALCULATE_ORBITAL_VELOCITY) == 0){
 		return OrbitalVelocityCommand();
-  }
+	}
 
 	if(strcmp(commandToken, ADD_CELESTIAL_BODY) == 0){
 		return AddCelestialBody(&celestialBodiesHead);
@@ -68,7 +67,7 @@ int ExecuteCommand(char* line){
 		return LoadSimulationData(RequestString("Name of the save file",0),&celestialBodiesHead);
 	}
 	if(strcmp(commandToken, INFO) == 0){
-	 	PrintDetails(RequestString("Name of the planet",0),celestialBodiesHead);
+		PrintDetails(RequestString("Name of the planet",0),celestialBodiesHead);
 		return 0;
 	}
 	if(strcmp(commandToken, SIMULATE) == 0){
@@ -78,18 +77,18 @@ int ExecuteCommand(char* line){
 		//command was not regognized, return 99.
 		return ERROR_COMMAND_NOT_RECOGNIZED;
 	}
- }
+}
 
 int OrbitalVelocityCommand(){
  //(double distance, double aphelion, double perihelion, double u)
- double distance;
- double aphelion;
- double perihelion;
- CelestialBody* referenceBody;
+	double distance;
+	double aphelion;
+	double perihelion;
+	CelestialBody* referenceBody;
 	//NOTE: Here a method returning a super class would be so damn sweet!
 	perihelion = RequestDouble(0, DBL_MAX, "Please Insert perihelion value for the desired orbit");
 	aphelion   = RequestDouble(perihelion, DBL_MAX, "Please Insert Aphelion value for the desired orbit");
-  distance	 = RequestDouble(perihelion, aphelion, "Please insert the distance the ship is right now from the orbiting body");
+	distance	 = RequestDouble(perihelion, aphelion, "Please insert the distance the ship is right now from the orbiting body");
 	referenceBody = RequestCelestialBody("Please insert the referenceBody",celestialBodiesHead);
 	double speed = CalculateOrbitalSpeed(distance, aphelion, perihelion, referenceBody->u);
 	printf(KOUTPUT"**PROGRAM OUTPUT:**\n");
@@ -98,17 +97,18 @@ int OrbitalVelocityCommand(){
 	printf("  The orbital speed at the perihelion is : "KDATA"%g"KOUTPUT" m/s \n", CalculateOrbitalSpeed(perihelion, aphelion, perihelion, referenceBody->u));
 	double h = (aphelion - perihelion)/(double)PARTITION_PARTS;
 	printf("Showing different speeds for different places in the orbit\n"
-	      "Jumping of %g m (meters) every time\n",h);
+		"Jumping of %g m (meters) every time\n",h);
 	double newDistance;
 	for(int i = 1; i< PARTITION_PARTS; i++){
 		newDistance = (perihelion + h*i);
 		printf(KOUTPUT"  The orbital speed at the distance "KDATA"%g"KOUTPUT" is : "KDATA"%g"KOUTPUT" m/s \n"KNORMAL, newDistance, CalculateOrbitalSpeed(newDistance, aphelion, perihelion, referenceBody->u));
 	}
- return 0;
+	return 0;
 }
 
 int CalculateDeltaV(){
 	//TODO
+	return 0;
 }
 
 void PrintAllCommands(){
@@ -201,9 +201,9 @@ int Simulate(struct List** celestialBodiesHead){
 
 		if(pthread_create(&td[i], NULL, &SimulationMain, &data[i])){
 		  //Could not create the thread
-		  printf(KERROR "***ERROR-ERROR-ERROR***\n"
-		                "   Internal program Error, thread could not lanch \n" KNORMAL);
-		  exit(1);
+			printf(KERROR "***ERROR-ERROR-ERROR***\n"
+				"   Internal program Error, thread could not lanch \n" KNORMAL);
+			exit(1);
 		}
 		else{
 			printf("thread %d body %s OK \n\n", data[i].thread_id, data[i].body->name);
@@ -217,9 +217,9 @@ int Simulate(struct List** celestialBodiesHead){
 
 	if(pthread_create(&td[threadNumber], NULL, &SimulationCommander, &data[0])){
 	  //Could not create the thread
-	  printf(KERROR "***ERROR-ERROR-ERROR***\n"
-					"   Internal program Error, thread could not lanch \n" KNORMAL);
-	  exit(1);
+		printf(KERROR "***ERROR-ERROR-ERROR***\n"
+			"   Internal program Error, thread could not lanch \n" KNORMAL);
+		exit(1);
 	}
 	printf("Simulation bootstrap completed...\n\n\n\n\n");
 
@@ -227,12 +227,12 @@ int Simulate(struct List** celestialBodiesHead){
 	printf(KDATA"simulation over at step %d\n\n\n"KNORMAL, condition_current_iteration(data->computation_section));
 
 
-	 condition_destroy(computation_section);
-	 condition_destroy(saving_section);
+	condition_destroy(computation_section);
+	condition_destroy(saving_section);
 	 //FIXME: monitor_destroy causes seg_fault
 	// monitor_destroy(mon);
-	 free(data);
-	 free(td);
+	free(data);
+	free(td);
 	printf(KDATA"cleanup completed\n\n\n" KNORMAL);
 	finalEnergy = CalculateSystemEnergy((*celestialBodiesHead));
 	printf("final system energy: %G\n", finalEnergy);

@@ -18,16 +18,16 @@ struct Coordinates{
 	double x;
 	double y;
 	double z;
-	};
+};
 
 struct List{
-	   struct List* next;
-		 struct List* previous;
-		 int position;
-		 struct CelestialBody* body;
-	};
+	struct List* next;
+	struct List* previous;
+	int position;
+	struct CelestialBody* body;
+};
 
-	typedef struct ThreadData{
+typedef struct ThreadData{
 		//char * line; //type of simulation to use
 		char *simulationName; //for saving purposes.
 		struct List* object;
@@ -43,7 +43,7 @@ struct List{
 	typedef struct CelestialBody{
 		struct CelestialBody* referenceBody;
 		char * name;
-	    double mass;
+		double mass;
 		struct Coordinates* coordinates;
 		struct Coordinates* speedVector;
 		double u;
@@ -62,51 +62,51 @@ struct List{
 	} CelestialBody;
 
 /*****Request Functions Prototypes*****/
-int RequestInt(int min, int max, char* message);
+	int RequestInt(int min, int max, char* message);
 
-double RequestDouble(double min, double max, char * message);
+	double RequestDouble(double min, double max, char * message);
 
-CelestialBody* RequestCelestialBody(char * message, struct List *list);
+	CelestialBody* RequestCelestialBody(char * message, struct List *list);
 
-char* RequestString(char* message, int nullIsAcceptable);
+	char* RequestString(char* message, int nullIsAcceptable);
 
-struct Coordinates* RequestCoordinateSet(char* message);
+	struct Coordinates* RequestCoordinateSet(char* message);
 
-CelestialBody* GetCelestialBody(char* name, struct List *list);
+	CelestialBody* GetCelestialBody(char* name, struct List *list);
 
-struct List * GetList(char *name, struct List *list);
+	struct List * GetList(char *name, struct List *list);
 
-int GetListSize(struct List *list);
+	int GetListSize(struct List *list);
 
 /***** Print Functions Prototypes*****/
 
-void PrintHelloMessage();
+	void PrintHelloMessage();
 
-void PrintAllBodies(struct List* list);
+	void PrintAllBodies(struct List* list);
 
-void PrintDetails(char* name, struct List* list);
+	void PrintDetails(char* name, struct List* list);
 
 /***** List Functions Prototypes*****/
 
-struct List* CreateListElement();
+	struct List* CreateListElement();
 
-void CreateCelestialBody(struct List* holder, CelestialBody* referenceBody,
-	 																 char* name, double mass,
-																	 struct Coordinates* positionVector,
-																	 struct Coordinates* speedVector);
+	void CreateCelestialBody(struct List* holder, CelestialBody* referenceBody,
+		char* name, double mass,
+		struct Coordinates* positionVector,
+		struct Coordinates* speedVector);
 
-struct Coordinates* createCoordinateSet(double x,double y,double z);
+	struct Coordinates* createCoordinateSet(double x,double y,double z);
 
-int IsListEmpty(struct List* list);
+	int IsListEmpty(struct List* list);
 
-int PushElement(struct List **listHead, struct List **newElement);
+	int PushElement(struct List **listHead, struct List **newElement);
 
-void UpdatePosition(struct List **list);
+	void UpdatePosition(struct List **list);
 
-void SetToBeginning(struct List **list);
+	void SetToBeginning(struct List **list);
 
-int RemoveList(struct List **list);
+	int RemoveList(struct List **list);
 
-int ChangeMode();
+	int ChangeMode();
 
 #endif

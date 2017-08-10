@@ -33,12 +33,12 @@ double CalculateSystemEnergy(struct List *list){
 
         //for each body, add the kinetic energy as E = m*(V^2)/2
         energy += mass * (list->body->speedVector->x*list->body->speedVector->x+
-                                    list->body->speedVector->y*list->body->speedVector->y+
-                                    list->body->speedVector->z*list->body->speedVector->z)/2;
+            list->body->speedVector->y*list->body->speedVector->y+
+            list->body->speedVector->z*list->body->speedVector->z)/2;
         //and the gravitational potential energy G*m*M/r for each object
 
         for(int j = 0; j < numberOfBodies; j++){
-        list = list->next;
+            list = list->next;
              //we will do a full cicle of the list
             rx = px-list->body->coordinates->x; //x distance
             ry = py-list->body->coordinates->y; //y distance

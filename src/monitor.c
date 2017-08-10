@@ -23,13 +23,13 @@
  *
  */
 
-#include<stdio.h>
-#include<pthread.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include<suspend.h>
-#include<monitor.h>
-#include<tlist.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <suspend.h>
+#include <monitor.h>
+#include <tlist.h>
 #include <signal.h>
 #include "various.h"
 
@@ -158,8 +158,6 @@ void condition_commander_start(condition c){
 	monitor_exit(c->m);
 	suspend();
 }
-
-// 切腹
 
 void condition_signal(condition c) {
 	c->n_iteration++;

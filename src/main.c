@@ -15,14 +15,14 @@ int simulationMethodFlag = 0;
 void (*SimulationMethod)(struct List*, struct Coordinates*, struct Coordinates*,struct Coordinates*);
 
 int main(){
-    PrintHelloMessage();
-    SimulationMethod = &RungeKutta;
+	PrintHelloMessage();
+	SimulationMethod = &RungeKutta;
 
-    char* line;
-    int returnCode = 0;
-    while(1){
-        line = RequestString("waiting for a Command",1);
-        returnCode = ExecuteCommand(line);
-        ErrorHandling(returnCode);
-    }
+	char* line;
+	int returnCode = 0;
+	while(1){
+		line = RequestString("waiting for a Command",1);
+		returnCode = ExecuteCommand(line);
+		ErrorHandling(returnCode);
+	}
 }

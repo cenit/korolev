@@ -3,7 +3,7 @@
 
 
 //exit defined in Various.h
-#define EXIT 1
+#define EXIT                          1
 //List
 #define ERROR_LIST_EMPTY             29
 //data.c

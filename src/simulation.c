@@ -1,9 +1,10 @@
+#include <math.h>
+
 #include "monitor.h"
 #include "various.h"
 #include "data.h"
 #include "matmath.h"
 //#include "main.c"
-#include <math.h>
 
 
 //double timeStep = 86400; //day
@@ -74,7 +75,7 @@ void Euler(struct List* object, struct Coordinates* newCoordinates, struct Coord
     free(temp);
 }
 
- void RungeKutta(struct List* object, struct Coordinates* newCoordinates, struct Coordinates* newSpeedVector,struct Coordinates* newAcceleration){
+void RungeKutta(struct List* object, struct Coordinates* newCoordinates, struct Coordinates* newSpeedVector,struct Coordinates* newAcceleration){
 // @ implemented following the paper:
 // Implementing a Fourth Order Runge-Kutta Method for Orbit Simulation
 // CJ Voesenek
@@ -173,9 +174,9 @@ void Euler(struct List* object, struct Coordinates* newCoordinates, struct Coord
 
 //Assign to "newCoordinates" the final result of the calculation (position).
     assign(newVelocity, k1r);
-        mols(k2r, 2);
+    mols(k2r, 2);
     summ(newVelocity, k2r);
-        mols(k3r, 2);
+    mols(k3r, 2);
     summ(newVelocity, k3r);
     summ(newVelocity, k4r);
     mols(newVelocity, timeStep/6); //newVelocity now contains a deltaPosition
@@ -184,9 +185,9 @@ void Euler(struct List* object, struct Coordinates* newCoordinates, struct Coord
 
     //Assign to "newSpeedVector" the final result of the calculation (speed).
     assign(newAcceleration, k1v);
-        mols(k2v, 2);
+    mols(k2v, 2);
     summ(newAcceleration, k2v);
-        mols(k3v, 2);
+    mols(k3v, 2);
     summ(newAcceleration, k3v);
     summ(newAcceleration, k4v);
     mols(newAcceleration, timeStep/6); //new accleration is the new deltaV
@@ -207,37 +208,37 @@ void Euler(struct List* object, struct Coordinates* newCoordinates, struct Coord
 
 
 void* SimulationMain(void* input){
-        ThreadData* data = (ThreadData*) input;
+    ThreadData* data = (ThreadData*) input;
         int code; //flag used for multithreading
         struct List ** object = &data->object; //pointer to obj
 
         struct Coordinates** objectSpeedVector      = &(data->body->speedVector);
         struct Coordinates** objectCoordinates      = &(data->body->coordinates);
         struct Coordinates* newSpeedVector = createCoordinateSet((*object)->body->speedVector->x,
-                                                                 (*object)->body->speedVector->y,
-                                                                 (*object)->body->speedVector->z);
+           (*object)->body->speedVector->y,
+           (*object)->body->speedVector->z);
         struct Coordinates* newCoordinates = createCoordinateSet((*object)->body->coordinates->x,
-                                                                 (*object)->body->coordinates->y,
-                                                                 (*object)->body->coordinates->z);
+           (*object)->body->coordinates->y,
+           (*object)->body->coordinates->z);
         struct Coordinates* newAcceleration = createCoordinateSet(0,0,0);
 
-    while(1){
+        while(1){
         //computation lock
-        monitor_enter(data->mon);
-        code = condition_check(data->computation_section);
-        if(code == SIMULATION_END){
+            monitor_enter(data->mon);
+            code = condition_check(data->computation_section);
+            if(code == SIMULATION_END){
             //I am the last thread to exit.
-            condition_commander_signal(data->computation_section);
-            monitor_exit(data->mon);
-            pthread_exit(0);
-        }
-        else if (code == EXIT_THREAD){
-            monitor_exit(data->mon);
-            pthread_exit(0);
-        }
-        else if(code == BREAK_BARRIER){
-            sim_iteration++;
-            PrintState(data->simulationName, object);
+                condition_commander_signal(data->computation_section);
+                monitor_exit(data->mon);
+                pthread_exit(0);
+            }
+            else if (code == EXIT_THREAD){
+                monitor_exit(data->mon);
+                pthread_exit(0);
+            }
+            else if(code == BREAK_BARRIER){
+                sim_iteration++;
+                PrintState(data->simulationName, object);
             condition_signal(data->computation_section); //wake up all the threads
             monitor_exit(data->mon);
         }

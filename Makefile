@@ -1,6 +1,4 @@
-CC = gcc
-LL = gcc
-CFLAGS = -c -include 'signal.h' -include 'stdlib.h' -include 'pthread.h' -include 'limits.h' -include 'stdio.h' -include 'unistd.h' -I $(SRCPATH) -I .
+#CFLAGS = -c -include 'signal.h' -include 'stdlib.h' -include 'pthread.h' -include 'limits.h' -include 'stdio.h' -include 'unistd.h' -I $(SRCPATH) -I .
 LFLAGS = -lm -lpthread
 
 EXECPATH = builds/
@@ -13,13 +11,16 @@ OBJECTS  = $(SOURCES:.c=.o)
 
 EXECUTABLE = $(EXECPATH)korolev
 
-all: $(EXECUTABLE)
+all: dirtree $(EXECUTABLE)
+
+dirtree:
+	mkdir -p $(EXECPATH)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(LL) $(LFLAGS) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) -o $@ $(LFLAGS)
 
-.c.o:
-	$(CC) $(CFLAGS) $< -o $@
+%.o: %.c
+	$(CC) -c -I$(SRCPATH) $< -o $@
 
 clean:
 	rm $(SRCPATH)*.o
